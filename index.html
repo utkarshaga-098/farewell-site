@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rangmanch Farewell</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #0a0a0a, #000);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* SMOOTH SCROLL */
+html {
+    scroll-behavior: smooth;
+}
+
+/* OVERLAY */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,215,0,0.05), transparent 40%, black);
+    pointer-events: none;
+}
+
+/* PARTICLES */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* CONTAINER */
+.container {
+    text-align: center;
+    padding: 80px 20px;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: all 1.5s ease;
+}
+.container.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* TITLE */
+h1 {
+    font-size: 3.2rem;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, #ffd700, #fff3a0, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h2 {
+    color: #aaa;
+    font-weight: 300;
+}
+
+/* CARD */
+.card {
+    margin: 40px auto;
+    max-width: 650px;
+    padding: 45px;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px);
+    box-shadow: 0 0 80px rgba(255,215,0,0.08);
+    transition: 0.4s;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 100px rgba(255,215,0,0.2);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,215,0,0.15), transparent 60%);
+    opacity: 0;
+    transition: 0.3s;
+}
+.card:hover::before {
+    opacity: 1;
+}
+
+/* DETAILS */
+.details {
+    margin-top: 20px;
+    line-height: 1.8;
+    color: #ddd;
+}
+
+/* COUNTDOWN */
+.countdown {
+    margin-top: 25px;
+    font-size: 1.3rem;
+    background: linear-gradient(90deg, gold, #fff3a0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* BUTTON */
+.btn {
+    margin-top: 30px;
+    padding: 14px 32px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(135deg, #ffd700, #fff3a0);
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+    transition: 0.6s;
+}
+.btn:hover::after {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: scale(1.07);
+}
+
+/* LINK BUTTON */
+.link-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: black;
+    background: linear-gradient(135deg, gold, #fff3a0);
+    font-weight: bold;
+    transition: 0.3s;
+}
+.link-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px gold;
+}
+
+/* MESSAGE */
+#message {
+    margin-top: 20px;
+    color: #90ee90;
+    opacity: 0;
+    transition: 0.5s;
+}
+#message.show {
+    opacity: 1;
+}
+
+/* MUSIC BUTTON */
+.music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: none;
+    padding: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    cursor: pointer;
+}
+
+footer {
+    margin-top: 60px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="container" id="main">
+
+<h1>🎭 Rangmanch Farewell 2026</h1>
+<h2>Inviting Our Esteemed Seniors</h2>
+
+<!-- MAIN CARD -->
+<div class="card" id="card">
+
+<p>
+A night of final curtains, silent goodbyes,  
+and echoes of applause that will never fade.
+</p>
+
+<div class="details">
+📅 25 April 2026 <br>
+📍 Graphic Era Auditorium <br>
+⏰ 6:00 PM onwards
+</div>
+
+<div class="countdown" id="countdown"></div>
+
+<button class="btn" onclick="confirmAttendance()">Confirm Presence</button>
+
+<div id="message">✨ Your presence is reserved.</div>
+
+</div>
+
+<!-- EXTRA SECTION -->
+<div class="card">
+<h2>✨ The Final Act</h2>
+<p>Every rehearsal, every performance, every moment shared — has led us here.</p>
+<p>This farewell is not an ending, but a standing ovation to your journey.</p>
+<a href="#details" class="link-btn">Explore Event</a>
+</div>
+
+<!-- DETAILS -->
+<div class="card" id="details">
+<h2>🎭 What Awaits</h2>
+<p>
+An evening filled with performances, memories, laughter  
+and a tribute to the artists who made Rangmanch unforgettable.
+</p>
+<a href="#main" class="link-btn">Back to Invitation</a>
+</div>
+
+<footer>Crafted with ❤️ by Rangmanch</footer>
+</div>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-btn" onclick="toggleMusic()">🎵</button>
+
+<script>
+
+/* ENTRY */
+window.onload = () => {
+    document.getElementById("main").classList.add("show");
+};
+
+/* RSVP */
+function confirmAttendance() {
+    document.getElementById("message").classList.add("show");
+}
+
+/* MUSIC */
+let music = document.getElementById("bgMusic");
+let playing = false;
+function toggleMusic() {
+    playing ? music.pause() : music.play();
+    playing = !playing;
+}
+
+/* COUNTDOWN */
+const target = new Date("April 25, 2026 18:00:00").getTime();
+setInterval(() => {
+    let now = new Date().getTime();
+    let diff = target - now;
+
+    let d = Math.floor(diff / (1000*60*60*24));
+    let h = Math.floor((diff % (1000*60*60*24))/(1000*60*60));
+    let m = Math.floor((diff % (1000*60*60))/(1000*60));
+
+    document.getElementById("countdown").innerText =
+        `${d}d ${h}h ${m}m remaining`;
+}, 1000);
+
+/* PARTICLES */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 80; i++) {
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*2,
+        dx: (Math.random()-0.5)*0.5,
+        dy: (Math.random()-0.5)*0.5
+    });
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = "rgba(255,215,0,0.6)";
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* SPOTLIGHT */
+const card = document.getElementById("card");
+card.addEventListener("mousemove", e => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty("--x", (e.clientX - rect.left) + "px");
+    card.style.setProperty("--y", (e.clientY - rect.top) + "px");
+});
+
+</script>
+
+</body>
+</html>
