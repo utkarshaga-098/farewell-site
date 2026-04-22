@@ -1,333 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rangmanch Farewell</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rangmanch Farewell | A Final Bow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #0a0a0a, #000);
-    color: white;
-    overflow-x: hidden;
-}
+    <style>
+        :root {
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --deep-red: #4a0404;
+            --curtain-red: #800020;
+            --glass: rgba(255, 255, 255, 0.03);
+            --bg-dark: #050505;
+        }
 
-/* SMOOTH SCROLL */
-html {
-    scroll-behavior: smooth;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
-/* OVERLAY */
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(255,215,0,0.05), transparent 40%, black);
-    pointer-events: none;
-}
+        body {
+            background-color: var(--bg-dark);
+            color: #eee;
+            font-family: 'Raleway', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-/* PARTICLES */
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
+        /* --- THE STAGE & CURTAINS --- */
+        .stage-container {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
-/* CONTAINER */
-.container {
-    text-align: center;
-    padding: 80px 20px;
-    opacity: 0;
-    transform: scale(0.96);
-    transition: all 1.5s ease;
-}
-.container.show {
-    opacity: 1;
-    transform: scale(1);
-}
+        .stage-container::before, .stage-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 12%;
+            height: 100%;
+            background: repeating-linear-gradient(90deg, #3d0202, var(--curtain-red) 10%, #3d0202 20%);
+            z-index: 10;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        }
+        .stage-container::before { left: 0; border-right: 1px solid var(--gold); }
+        .stage-container::after { right: 0; border-left: 1px solid var(--gold); }
 
-/* TITLE */
-h1 {
-    font-size: 3.2rem;
-    letter-spacing: 3px;
-    background: linear-gradient(90deg, #ffd700, #fff3a0, #ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        canvas#bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
 
-h2 {
-    color: #aaa;
-    font-weight: 300;
-}
+        .logo-wrapper {
+            z-index: 15;
+            margin-bottom: -20px;
+        }
 
-/* CARD */
-.card {
-    margin: 40px auto;
-    max-width: 650px;
-    padding: 45px;
-    border-radius: 25px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(25px);
-    box-shadow: 0 0 80px rgba(255,215,0,0.08);
-    transition: 0.4s;
-    position: relative;
-}
+        .logo {
+            width: 500px; /* Reduced from 600px for professional scaling */
+            height: 500px; 
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+            animation: float 4s ease-in-out infinite;
+        }
 
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0 100px rgba(255,215,0,0.2);
-}
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 25px;
-    background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,215,0,0.15), transparent 60%);
-    opacity: 0;
-    transition: 0.3s;
-}
-.card:hover::before {
-    opacity: 1;
-}
+        .hero-section {
+            z-index: 5;
+            text-align: center;
+            padding: 20px;
+        }
 
-/* DETAILS */
-.details {
-    margin-top: 20px;
-    line-height: 1.8;
-    color: #ddd;
-}
+        .event-tag {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 5px;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--gold);
+            padding: 5px 15px;
+            display: inline-block;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
 
-/* COUNTDOWN */
-.countdown {
-    margin-top: 25px;
-    font-size: 1.3rem;
-    background: linear-gradient(90deg, gold, #fff3a0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            background: linear-gradient(to bottom, #fff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
 
-/* BUTTON */
-.btn {
-    margin-top: 30px;
-    padding: 14px 32px;
-    border-radius: 30px;
-    border: none;
-    background: linear-gradient(135deg, #ffd700, #fff3a0);
-    color: black;
-    font-weight: bold;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
+        .sub-title {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: #bbb;
+            margin-bottom: 40px;
+        }
 
-.btn::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
-    transition: 0.6s;
-}
-.btn:hover::after {
-    left: 100%;
-}
+        .content-wrapper {
+            position: relative;
+            z-index: 15;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 25px 100px;
+        }
 
-.btn:hover {
-    transform: scale(1.07);
-}
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-/* LINK BUTTON */
-.link-btn {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 12px 28px;
-    border-radius: 30px;
-    text-decoration: none;
-    color: black;
-    background: linear-gradient(135deg, gold, #fff3a0);
-    font-weight: bold;
-    transition: 0.3s;
-}
-.link-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 20px gold;
-}
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-/* MESSAGE */
-#message {
-    margin-top: 20px;
-    color: #90ee90;
-    opacity: 0;
-    transition: 0.5s;
-}
-#message.show {
-    opacity: 1;
-}
+        .info-card {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 60px 40px;
+            border-radius: 4px;
+            margin-bottom: 80px;
+            text-align: center;
+        }
 
-/* MUSIC BUTTON */
-.music-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    border: none;
-    padding: 14px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    color: white;
-    cursor: pointer;
-}
+        .stars-section { padding: 40px 0 100px; }
+        .stars-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 15px; }
+        .stars-title span { color: var(--gold); font-style: italic; }
+        .stars-subtitle { color: #999; margin-bottom: 50px; max-width: 650px; }
 
-footer {
-    margin-top: 60px;
-    color: #777;
-}
-</style>
+        .stars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .star-card {
+            background: rgba(74, 4, 4, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 35px 15px;
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .star-card:hover {
+            background: rgba(74, 4, 4, 0.3);
+            border-color: var(--gold);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .star-initial {
+            width: 55px; height: 55px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem; color: var(--gold);
+            transition: 0.3s;
+        }
+
+        .star-card:hover .star-initial { background: var(--gold); color: #000; }
+        .star-name { font-size: 0.95rem; font-weight: 400; color: #ddd; }
+
+        /* --- RSVP FORM STYLING --- */
+        .rsvp-form {
+            max-width: 450px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label {
+            display: block;
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .primary-btn {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 18px 45px;
+            font-family: 'Cinzel';
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.4s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 2px;
+            width: 100%;
+        }
+
+        .primary-btn:hover {
+            background: var(--gold);
+            color: black;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .music-btn {
+            position: fixed; bottom: 30px; right: 30px; z-index: 100;
+            background: rgba(0,0,0,0.6); border: 1px solid var(--gold);
+            color: var(--gold); width: 50px; height: 50px; border-radius: 50%;
+            cursor: pointer; backdrop-filter: blur(5px);
+        }
+
+        footer {
+            text-align: center; padding: 60px; font-size: 0.75rem;
+            letter-spacing: 3px; color: #555;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .stage-container::before, .stage-container::after { width: 5%; }
+            .stars-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-title { font-size: 3rem; }
+        }
+    </style>
 </head>
-
 <body>
 
 <canvas id="bg"></canvas>
 
-<div class="container" id="main">
-
-<h1>🎭 Rangmanch Farewell 2026</h1>
-<h2>Inviting Our Esteemed Seniors</h2>
-
-<!-- MAIN CARD -->
-<div class="card" id="card">
-
-<p>
-A night of final curtains, silent goodbyes,  
-and echoes of applause that will never fade.
-</p>
-
-<div class="details">
-📅 25 April 2026 <br>
-📍 Graphic Era Auditorium <br>
-⏰ 6:00 PM onwards
+<div class="stage-container">
+    <div class="logo-wrapper">
+        <img src="rangmanch.png" alt="Logo" class="logo">
+    </div>
+    <div class="hero-section">
+        <div class="event-tag">Rangmanch • Graphic Era</div>
+        <h1 class="main-title">A Final Bow</h1>
+        <p class="sub-title">A Farewell Evening in Honour of Our Beloved Seniors</p>
+        <a href="#rsvp" class="primary-btn" style="width: auto;">RESERVE YOUR SEAT</a>
+    </div>
 </div>
 
-<div class="countdown" id="countdown"></div>
+<div class="content-wrapper">
+    
+    <div class="info-card reveal">
+        <h2 style="font-family: 'Playfair Display'; font-size: 2.2rem; margin-bottom: 25px;">The Final Act</h2>
+        <p style="max-width: 800px; margin: 0 auto 30px;">Every rehearsal, every performance, and every standing ovation has led to this moment. We invite you to witness the final curtain call for the Class of 2026.</p>
+        
+        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 40px; border-top: 1px solid rgba(212, 175, 55, 0.1); padding-top: 30px;">
+            <div><p style="color: var(--gold); font-family: 'Cinzel'; font-size: 0.7rem;">DATE</p><p>25th April 2026</p></div>
+            <div><p style="color: var(--gold); font-family: 'Cinzel'; font-size: 0.7rem;">TIME</p><p>6:00 PM onwards</p></div>
+            <div><p style="color: var(--gold); font-family: 'Cinzel'; font-size: 0.7rem;">VENUE</p><p>Graphic Era Auditorium</p></div>
+        </div>
+    </div>
 
-<button class="btn" onclick="confirmAttendance()">Confirm Presence</button>
+    <div class="stars-section reveal">
+        <div class="event-tag" style="border: none; padding: 0;">Our Performers</div>
+        <h2 class="stars-title">Our <span>Stars</span> of the Stage</h2>
+        <div class="stars-grid">
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Nivesh Jain</div></div>
+                        <div class="star-card"><div class="star-initial"></div><div class="star-name">Gargi Gussain</div></div>
+            <div class="star-card"><div class="star-initial">N</div><div class="star-name">Nakul Bora</div></div>
+            <div class="star-card"><div class="star-initial">V</div><div class="star-name">Vansh Thakur</div></div>
+            <div class="star-card"><div class="star-initial">A</div><div class="star-name">Astha Chaudhary</div></div>
+            <div class="star-card"><div class="star-initial">S</div><div class="star-name">Saurabh Mehta</div></div>
+            <div class="star-card"><div class="star-initial">D</div><div class="star-name">Divyanshi Mishra</div></div>
+            <div class="star-card"><div class="star-initial">D</div><div class="star-name">Dhruv Gupta</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Ayushi Jaiswal</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Abhay Das</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Maahi Yadav</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Aashi Gautam</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Avanish Thakur</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Ashay</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Raj Yadav</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Ashish Tyagi</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Mahek Kakadiya</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Pratyaksh Tyagi</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Yashwant Prasad</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Chirag Joshi</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Honey</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Aditi Gupta</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Jalaj Pratap</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Divyanshi Rasotia</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Lakshay Saini</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Aditya Jain</div></div>
+            <div class="star-card"><div class="star-initial"></div><div class="star-name">Shivam Bharti</div></div>
+        </div>
+    </div>
 
-<div id="message">✨ Your presence is reserved.</div>
+    <div class="info-card reveal" id="rsvp">
+        <h2 style="font-family: 'Playfair Display'; margin-bottom: 20px;">The Registry</h2>
+        <div id="countdown" style="font-family: 'Cinzel'; color: var(--gold); font-size: 1.3rem; margin-bottom: 30px;"></div>
+        
+        <form id="rsvpForm" action="https://formspree.io/f/xjgjaqgb" method="POST" class="rsvp-form">
+            <div class="input-group">
+                <label>FULL NAME</label>
+                <input type="text" name="Guest Name" placeholder="Enter your name" required>
+            </div>
+            <div class="input-group">
+
+                </select>
+            </div>
+            <input type="text" name="_gotcha" style="display:none">
+            
+            <button type="submit" class="primary-btn">CONFIRM MY PRESENCE</button>
+        </form>
+        
+        <div id="thankYouMsg" style="display:none; color: var(--gold); font-family: 'Cinzel'; margin-top: 20px;">
+            ✨ RSVP RECEIVED • SEE YOU AT THE SHOW
+        </div>
+    </div>
 
 </div>
 
-<!-- EXTRA SECTION -->
-<div class="card">
-<h2>✨ The Final Act</h2>
-<p>Every rehearsal, every performance, every moment shared — has led us here.</p>
-<p>This farewell is not an ending, but a standing ovation to your journey.</p>
-<a href="#details" class="link-btn">Explore Event</a>
-</div>
+<footer>
+    <p>CRAFTED WITH PASSION BY RANGMANCH CREATIVE</p>
+    <p>© 2026 GRAPHIC ERA GROUP OF INSTITUTIONS • DEHRADUN</p>
+</footer>
 
-<!-- DETAILS -->
-<div class="card" id="details">
-<h2>🎭 What Awaits</h2>
-<p>
-An evening filled with performances, memories, laughter  
-and a tribute to the artists who made Rangmanch unforgettable.
-</p>
-<a href="#main" class="link-btn">Back to Invitation</a>
-</div>
-
-<footer>Crafted with ❤️ by Rangmanch</footer>
-</div>
-
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<button class="music-btn" onclick="toggleMusic()">🎵</button>
+<button class="music-btn" onclick="toggleMusic()">♪</button>
+<audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
 <script>
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
 
-/* ENTRY */
-window.onload = () => {
-    document.getElementById("main").classList.add("show");
-};
+    function initCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
-/* RSVP */
-function confirmAttendance() {
-    document.getElementById("message").classList.add("show");
-}
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5;
+            this.speedY = Math.random() * 0.4 + 0.1;
+            this.opacity = Math.random();
+        }
+        update() {
+            this.y -= this.speedY;
+            if (this.y < 0) this.reset();
+        }
+        draw() {
+            ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        }
+    }
 
-/* MUSIC */
-let music = document.getElementById("bgMusic");
-let playing = false;
-function toggleMusic() {
-    playing ? music.pause() : music.play();
-    playing = !playing;
-}
+    for (let i = 0; i < 100; i++) particles.push(new Particle());
 
-/* COUNTDOWN */
-const target = new Date("April 25, 2026 18:00:00").getTime();
-setInterval(() => {
-    let now = new Date().getTime();
-    let diff = target - now;
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
 
-    let d = Math.floor(diff / (1000*60*60*24));
-    let h = Math.floor((diff % (1000*60*60*24))/(1000*60*60));
-    let m = Math.floor((diff % (1000*60*60))/(1000*60));
+    window.addEventListener('resize', initCanvas);
+    initCanvas(); animate();
 
-    document.getElementById("countdown").innerText =
-        `${d}d ${h}h ${m}m remaining`;
-}, 1000);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-/* PARTICLES */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
+    const targetDate = new Date("April 25, 2026 18:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById("countdown").innerText = `${d}D : ${h}H : ${m}M : ${s}S`;
+    }, 1000);
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+    const music = document.getElementById("bgMusic");
+    function toggleMusic() {
+        music.paused ? music.play() : music.pause();
+    }
 
-let particles = [];
-
-for (let i = 0; i < 80; i++) {
-    particles.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        r: Math.random()*2,
-        dx: (Math.random()-0.5)*0.5,
-        dy: (Math.random()-0.5)*0.5
-    });
-}
-
-function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    particles.forEach(p => {
-        p.x += p.dx;
-        p.y += p.dy;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        ctx.fillStyle = "rgba(255,215,0,0.6)";
-        ctx.fill();
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-/* SPOTLIGHT */
-const card = document.getElementById("card");
-card.addEventListener("mousemove", e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty("--x", (e.clientX - rect.left) + "px");
-    card.style.setProperty("--y", (e.clientY - rect.top) + "px");
-});
-
+    // FORM HANDLING FOR AJAX SUBMISSION (So the page doesn't refresh)
+    var form = document.getElementById("rsvpForm");
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          form.style.display = "none";
+          document.getElementById("thankYouMsg").style.display = "block";
+        } else {
+          alert("Oops! There was a problem submitting your RSVP");
+        }
+      });
+    }
+    form.addEventListener("submit", handleSubmit);
 </script>
 
 </body>
